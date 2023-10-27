@@ -1,13 +1,18 @@
 import { Request, Response, NextFunction } from 'express';
 
-export interface ServerError {
+export type ServerError = {
   log: string;
   status: number;
   message: string;
-}
+};
 
 export type MiddlewareFunction = (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => void;
+
+export type TicketController = {
+  processTicket: MiddlewareFunction;
+  getTicket: MiddlewareFunction;
+};
