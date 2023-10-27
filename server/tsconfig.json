@@ -4,12 +4,12 @@
     "module": "commonjs",
     "lib": ["es6"],
     "allowJs": true,
-    "outDir": "./dist",
+    "outDir": "../dist/server",
     "rootDir": ".",
     "strict": true,
     "removeComments": true,
     "esModuleInterop": true,
-    "types": ["node", "express", "jest", "uuid", "supertest"],
+    "types": ["node", "express", "pg", "jest", "uuid", "supertest"],
     "noImplicitAny": true
   },
   "include": ["**/*"]
