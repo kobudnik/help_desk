@@ -56,7 +56,7 @@ function TicketTable({ tickets }: TicketTableProps) {
             }`}
             onClick={() => handleChangeFilter(filter)}
           >
-            {filter === 'all' ? 'All' : filter}
+            {filter[0].toUpperCase() + filter.slice(1)}
           </button>
         ))}
       </div>
