@@ -57,7 +57,7 @@ export const ticketController: TicketController = {
   },
   updateStatus: async (req, res, next) => {
     try {
-      const { id, newStatus } = req.body;
+      const { id, newStatus, response } = req.body;
       if (!id || !newStatus) {
         throw new Error('Missing required parameters.');
       }
@@ -65,7 +65,9 @@ export const ticketController: TicketController = {
       const params = [newStatus, id];
       await db.query(text, params);
       if (newStatus === 'resolved') {
-        logger.info(`Normally send email here. Responded to ticket id#${id}`);
+        let logInfo = `Normally send email here. Responded to ticket id#${id}.`;
+        if (response) logInfo += '' + response;
+        logger.info(logInfo);
       } else if (newStatus === 'in progress')
         logger.info(`id #${id}: Status upgraded to in progress`);
 

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import TicketModal from './TicketModal';
+import { TicketModal } from './TicketModal';
 import {
   faPlus,
   faCheck,
@@ -138,6 +138,7 @@ function TicketTable({ tickets }: TicketTableProps) {
                   console.log(ticket);
                   openModal(ticket);
                 }}
+                className="hover:bg-gray-900 cursor-pointer"
               >
                 <td className="px-6 py-4">{ticket.id}</td>
                 <td className="px-6 py-4">{ticket.name}</td>
