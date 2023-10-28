@@ -133,7 +133,7 @@ function TicketForm() {
         <div className="w-3/4 flex justify-center">
           <button
             type="button"
-            className="block bg-primary hover:bg-purple-800 mt-4 text-white font-bold py-8 px-32 rounded-lg focus:outline-none focus:shadow-outline"
+            className="block bg-primary hover:bg-indigo-900 mt-4 text-white font-bold py-8 px-32 rounded-lg focus:outline-none focus:shadow-outline"
             onClick={handleSubmit}
           >
             Submit
