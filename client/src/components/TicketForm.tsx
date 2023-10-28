@@ -49,8 +49,8 @@ function TicketForm() {
   };
 
   return (
-    <form className="  bg-yellow-100 w-full flex flex-col  items-center justify-center pl-60">
-      <div className=" px-40 w-full ">
+    <form className="  bg-yellow-100  w-1/2 flex flex-col  items-center justify-center">
+      <div className="  w-full">
         <div className="sm:col-span-4">
           <label
             htmlFor="name"
@@ -64,10 +64,11 @@ function TicketForm() {
               name="name"
               id="name"
               autoComplete="username"
-              className="block w-3/4 p-2.5 rounded-lg text-white bg-gray-700 focus:ring-blue-500 focus:border-blue-500"
+              className="block w-full p-2.5 rounded-lg text-white border  bg-gray-700 border-gray-600 focus:ring-2 focus:border-1 focus:ring-blue-500 focus:border-blue-500"
               placeholder="John Doe"
               value={name}
               onChange={handleNameChange}
+              aria-label="Name"
               required
             />
           </div>
@@ -85,7 +86,8 @@ function TicketForm() {
               name="email"
               type="email"
               autoComplete="email"
-              className="block w-3/4 p-2.5 rounded-lg text-white bg-gray-700 focus:ring-blue-500 focus:border-blue-500"
+              aria-label="Email"
+              className="block w-full p-2.5 rounded-lg text-white border  bg-gray-700 border-gray-600 focus:ring-2 focus:border-1 focus:ring-blue-500 focus:border-blue-500"
               placeholder="We'll get back to you here."
               value={email}
               onChange={handleEmailChange}
@@ -106,7 +108,8 @@ function TicketForm() {
               type="text"
               name="subject"
               id="subject"
-              className="block w-3/4 p-2.5 rounded-lg text-white bg-gray-700 focus:ring-blue-500 focus:border-blue-500"
+              aria-label="subject"
+              className="block w-full p-2.5 rounded-lg text-white border  bg-gray-700 border-gray-600 focus:ring-2 focus:border-1 focus:ring-blue-500 focus:border-blue-500"
               placeholder="What's this about?"
               value={subject}
               onChange={handleSubjectChange}
@@ -123,17 +126,18 @@ function TicketForm() {
           </label>
           <textarea
             id="message"
-            rows={3}
-            className="block p-2.5 w-3/4 max-h-44 text-md  rounded-lg border  bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:border-blue-500"
-            placeholder="Tell us about the issue."
+            rows={2}
+            className="block w-full p-2.5 rounded-lg text-white border  bg-gray-700 border-gray-600 focus:ring-2 focus:border-1 focus:ring-blue-500 focus:border-blue-500"
             value={description}
             onChange={handleDescriptionChange}
+            aria-label="Description"
           ></textarea>
         </div>
-        <div className="w-3/4 flex justify-center">
+        <div className="w-full flex justify-center">
           <button
             type="button"
-            className="block bg-primary hover:bg-indigo-900 mt-4 text-white font-bold py-8 px-32 rounded-lg focus:outline-none focus:shadow-outline"
+            aria-label="submit"
+            className="block bg-cyan-900 hover:bg-cyan-950 mt-4 text-white font-bold py-8 px-32 rounded-xl focus:outline-none focus:shadow-outline"
             onClick={handleSubmit}
           >
             Submit
