@@ -52,7 +52,7 @@ function TicketForm() {
       });
 
       if (response.ok) {
-        setValidationStatus('Success!!');
+        setValidationStatus('Success!');
       } else {
         setValidationStatus('Failed to submit');
       }

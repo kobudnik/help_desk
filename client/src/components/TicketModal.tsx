@@ -42,6 +42,7 @@ function TicketModal({ ticket, closeModal }: TicketModalProps) {
         });
         setTickets(newState);
         setSentStatus(true);
+        setReply('');
         return;
       } else {
         console.error(
@@ -67,8 +68,18 @@ function TicketModal({ ticket, closeModal }: TicketModalProps) {
           className="absolute top-4 right-4 cursor-pointer close-icon text-3xl hover:text-blue-500"
           onClick={closeModal}
         />
-        <div className="flex flex-col items-center gap-4  mt-24">
-          <h2>Ticket Details</h2>
+        {ticket.status === 'new' && (
+          <button
+            className=" px-8 py-4 bg-yellow-500 hover:bg-yellow-400 text-white rounded-xl"
+            onClick={() => handleSendResponse('in progress')}
+          >
+            Mark Pending
+          </button>
+        )}
+        <div className="flex flex-col items-center gap-4  mt-8">
+          <h1 className="text-3xl">
+            <strong>Ticket Details </strong>{' '}
+          </h1>
           <div>
             <strong>ID:</strong> {ticket.id}
           </div>
@@ -84,9 +95,7 @@ function TicketModal({ ticket, closeModal }: TicketModalProps) {
           <div>
             <strong>Subject:</strong> {ticket.subject}
           </div>
-          <div>
-            <strong>Description:</strong> {ticket.description}
-          </div>
+          <strong>Description: {ticket.description}</strong>
           <div>
             <strong>Created At:</strong> {ticket.created_at}
           </div>
@@ -97,38 +106,36 @@ function TicketModal({ ticket, closeModal }: TicketModalProps) {
               {ticket.response}{' '}
             </div>
           )}
-
           {ticket.status !== 'resolved' && (
-            <div className="response-area">
-              <textarea
-                rows={4}
-                placeholder="Type your response here..."
-                value={reply}
-                onChange={handleResponseChange}
-                className="w-full"
-              />
+            <div className="response-area  w-full">
+              <div className="flex justify-center">
+                <textarea
+                  rows={3}
+                  placeholder="Type your response here."
+                  value={reply}
+                  onChange={handleResponseChange}
+                  className=" w-1/2 p-2.5 rounded-xl text-white bg-gray-700 border-gray-600  focus:ring-2 focus:border-1 focus:ring-blue-500 focus:border-blue-50"
+                />
+              </div>
               {reply.length > 0 && (
-                <button
-                  onClick={() => handleSendResponse('resolved')}
-                  className=" px-20 py-8 bg-blue-950 hover:bg-blue-900 text-white rounded-xl"
-                >
-                  Reply
-                </button>
+                <div className="flex justify-center">
+                  <button
+                    onClick={() => handleSendResponse('resolved')}
+                    className=" block px-20 py-6 mt-4 bg-blue-950 hover:bg-blue-900 text-white rounded-xl"
+                  >
+                    Reply
+                  </button>
+                </div>
               )}
             </div>
           )}
-
-          {ticket.status === 'new' && (
-            <button
-              className=" px-20 py-8 bg-blue-950 hover:bg-blue-900 text-white rounded-xl"
-              onClick={() => handleSendResponse('in progress')}
-            >
-              Mark Pending
-            </button>
-          )}
         </div>
       </div>
-      {sentStatus && <span className="text-green-500"> Success! </span>}
+      {sentStatus && (
+        <div className="flex justify-center">
+          <strong className="text-green-500 text-2xl mt-4"> Success! </strong>
+        </div>
+      )}
     </Modal>
   );
 }
