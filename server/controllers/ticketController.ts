@@ -9,13 +9,13 @@ const errorTemplate = {
 export const ticketController: TicketController = {
   processTicket: async (req, res, next) => {
     try {
-      const { name, email, title, description } = req.body;
+      const { name, email, subject, description } = req.body;
 
-      const text = `INSERT INTO tickets (name, email, title, description)
+      const text = `INSERT INTO tickets (name, email, subject, description)
                    VALUES ($1, $2, $3, $4)
                    RETURNING id;`;
 
-      const values = [name, email, title, description];
+      const values = [name, email, subject, description];
       const result = await db.query(text, values);
       console.log({ result });
 

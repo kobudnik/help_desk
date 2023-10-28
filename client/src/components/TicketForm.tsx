@@ -1,77 +1,144 @@
+import { useState, ChangeEvent } from 'react';
 function TicketForm() {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [subject, setSubject] = useState('');
+  const [description, setDescription] = useState('');
+
+  type FormEvent = ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
+  const handleNameChange = (e: FormEvent) => {
+    setName(e.target.value);
+  };
+
+  const handleEmailChange = (e: FormEvent) => {
+    setEmail(e.target.value);
+  };
+
+  const handleSubjectChange = (e: FormEvent) => {
+    setSubject(e.target.value);
+  };
+
+  const handleDescriptionChange = (e: FormEvent) => {
+    setDescription(e.target.value);
+  };
+
+  const handleSubmit = async () => {
+    try {
+      const response = await fetch('/api/tickets', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          subject,
+          description,
+        }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Server response:', data);
+      } else {
+        console.error('Server error:', response.status, response.statusText);
+      }
+    } catch (error) {
+      console.error('An error occurred:', error);
+    }
+  };
+
   return (
     <form className=" w-5/6 flex flex-col items-center justify-center bg-yellow-100 pb-72  px-20">
       <div className=" px-40 w-full ">
         <div className="sm:col-span-4">
           <label
-            htmlFor="Name"
-            className="block text-md font-medium text-primary"
+            htmlFor="name"
+            className="block mb-2 text-md font-medium text-gray-900"
           >
             Name
           </label>
-          <div className="mt-2">
-            <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-              <input
-                type="text"
-                name="username"
-                id="username"
-                autoComplete="username"
-                className="block flex-1 border-0 bg-transparent py-1.5 pl-3 dark:text-white placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-              />
-            </div>
+          <div className="my-2">
+            <input
+              type="text"
+              name="name"
+              id="name"
+              autoComplete="username"
+              className="block w-3/4 p-2.5 rounded-lg text-white bg-gray-700 focus:ring-blue-500 focus:border-blue-500"
+              placeholder="John Doe"
+              value={name}
+              onChange={handleNameChange}
+              required
+            />
           </div>
         </div>
         <div className="sm:col-span-4">
           <label
             htmlFor="email"
-            className="block text-sm font-medium leading-6 text-gray-900"
+            className="text-md font-medium leading-6 text-gray-900 "
           >
-            Email address
+            Email
           </label>
-          <div className="mt-2">
+          <div className="my-2">
             <input
               id="email"
               name="email"
               type="email"
               autoComplete="email"
-              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              className="block w-3/4 p-2.5 rounded-lg text-white bg-gray-700 focus:ring-blue-500 focus:border-blue-500"
+              placeholder="We'll get back to you here..."
+              value={email}
+              onChange={handleEmailChange}
+              required
             />
           </div>
         </div>
 
         <div className="col-span-full ">
           <label
-            htmlFor="about"
-            className="block text-sm font-medium leading-6 text-gray-900"
+            htmlFor="subject"
+            className="block text-md font-medium leading-6 text-gray-900"
           >
-            About
+            Subject
           </label>
-          <div className="mt-2">
-            <textarea
-              id="about"
-              name="about"
-              rows={3}
-              className="block w-3/4 rounded-md border-0 p-2.5 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            ></textarea>
+          <div className="my-2">
+            <input
+              type="text"
+              name="subject"
+              id="subject"
+              className="block w-3/4 p-2.5 rounded-lg text-white bg-gray-700 focus:ring-blue-500 focus:border-blue-500"
+              placeholder="What's this about?"
+              value={subject}
+              onChange={handleSubjectChange}
+              required
+            />
           </div>
-          <p className="mt-3 text-sm leading-6 text-gray-600">
-            Write a few sentences about yourself.
-          </p>
         </div>
         <div>
           <label
-            htmlFor="message"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            htmlFor="description"
+            className="block mb-2 text-md font-medium text-gray-900"
           >
-            Your message
+            Description
           </label>
           <textarea
             id="message"
             rows={4}
-            className="block p-2.5 w-3/4 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            placeholder="Leave a comment..."
+            className="block p-2.5 w-3/4 max-h-44 text-md  rounded-lg border  bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:border-blue-500"
+            placeholder="Tell us about the issue..."
+            value={description}
+            onChange={handleDescriptionChange}
           ></textarea>
         </div>
+      </div>
+      <div className="w-3/4 mt-4 flex justify-center mr-40">
+        <button
+          type="button"
+          className="block bg-primary hover:bg-purple-800 text-white font-bold py-8 px-32 rounded-lg focus:outline-none focus:shadow-outline"
+          onClick={handleSubmit}
+        >
+          Submit
+        </button>
       </div>
     </form>
   );
