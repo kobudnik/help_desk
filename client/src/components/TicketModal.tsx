@@ -9,17 +9,17 @@ interface TicketModalProps {
 }
 
 function TicketModal({ ticket, closeModal }: TicketModalProps) {
-  const [response, setResponse] = useState('');
+  const [reply, setReply] = useState<string>('');
   const { tickets, setTickets } = useTickets();
   const handleResponseChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setResponse(e.target.value);
+    setReply(e.target.value);
   };
 
   const handleSendResponse = async (updatedStatus: string) => {
     const requestBody = JSON.stringify({
       newStatus: 'resolved',
       id: ticket.id,
-      response,
+      response: reply.length > 0 ? reply : null,
     });
     try {
       const response = await fetch('/api/tickets', {
@@ -32,7 +32,7 @@ function TicketModal({ ticket, closeModal }: TicketModalProps) {
       if (response.ok) {
         const newState = [...tickets].map((el) => {
           if (el.id === ticket.id) {
-            return { ...el, status: updatedStatus };
+            return { ...el, status: updatedStatus, response: reply };
           } else {
             return el;
           }
@@ -83,17 +83,24 @@ function TicketModal({ ticket, closeModal }: TicketModalProps) {
           <div>
             <strong>Created At:</strong> {ticket.created_at}
           </div>
+          {ticket.response !== null && (
+            <div>
+              {' '}
+              <strong>Reply: </strong>
+              {ticket.response}{' '}
+            </div>
+          )}
 
           {ticket.status !== 'resolved' && (
             <div className="response-area">
               <textarea
                 rows={4}
                 placeholder="Type your response here..."
-                value={response}
+                value={reply}
                 onChange={handleResponseChange}
                 className="w-full"
               />
-              {response.length > 0 && (
+              {reply.length > 0 && (
                 <button
                   onClick={() => handleSendResponse('resolved')}
                   className=" px-20 py-8 bg-blue-950 hover:bg-blue-900 text-white rounded-xl"

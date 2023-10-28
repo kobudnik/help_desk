@@ -6,4 +6,5 @@ export type Ticket = {
   subject: string;
   description: string;
   created_at: string;
+  response: string | null;
 };

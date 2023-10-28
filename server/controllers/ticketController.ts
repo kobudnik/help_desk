@@ -61,8 +61,12 @@ export const ticketController: TicketController = {
       if (!id || !newStatus) {
         throw new Error('Missing required parameters.');
       }
-      const text = 'UPDATE tickets SET status = $1 WHERE id = $2';
+      let text = 'UPDATE tickets SET status = $1 WHERE id = $2';
       const params = [newStatus, id];
+      if (response?.length > 0) {
+        text = 'UPDATE tickets SET status = $1, response=$3 WHERE id = $2';
+        params.push(response);
+      }
       await db.query(text, params);
       if (newStatus === 'resolved') {
         let logInfo = `Normally send email here. Responded to ticket id#${id}.`;
