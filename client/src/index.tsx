@@ -2,6 +2,7 @@ import App from './components/App';
 import './main.css';
 import ReactDOM from 'react-dom/client';
 import { Layout } from './components/Layout';
+import { AdminCenter } from './components/AdminCenter';
 
 import {
   createBrowserRouter,
@@ -14,6 +15,7 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<Layout />}>
       <Route index element={<App />} />
+      <Route path="/admin" element={<AdminCenter />} />
     </Route>,
   ),
 );

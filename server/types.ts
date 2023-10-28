@@ -13,6 +13,6 @@ export type MiddlewareFunction = (
 ) => void;
 
 export type TicketController = {
-  processTicket: MiddlewareFunction;
-  getTicket: MiddlewareFunction;
+  addTicket: MiddlewareFunction;
+  getTickets: MiddlewareFunction;
 };
