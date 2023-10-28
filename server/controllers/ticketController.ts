@@ -7,7 +7,7 @@ const errorTemplate = {
 };
 
 export const ticketController: TicketController = {
-  processTicket: async (req, res, next) => {
+  addTicket: async (req, res, next) => {
     try {
       const { name, email, subject, description } = req.body;
 
@@ -17,24 +17,26 @@ export const ticketController: TicketController = {
 
       const values = [name, email, subject, description];
       const result = await db.query(text, values);
-      console.log({ result });
 
       const insertedTicketId = result.rows[0].id;
       res.locals.id = insertedTicketId;
       return next();
-    } catch (e) {
-      return next({
+    } catch (e: unknown) {
+      const insertErr = {
         ...errorTemplate,
         status: 400,
         message: 'Ticket failed to add',
-      });
+      };
+      if (e instanceof Error) insertErr.message += ' ' + e.message;
+      return next(insertErr);
     }
   },
-  getTicket: async (req, res, next) => {
+  getTickets: async (req, res, next) => {
     try {
       const text = 'SELECT * FROM tickets';
       const result = await db.query(text);
-      res.locals.id = result.rows;
+
+      res.locals.tickets = result.rows;
       return next();
     } catch (e) {
       return next({
