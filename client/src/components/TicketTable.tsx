@@ -10,7 +10,7 @@ import {
 import { v4 as uuidv4 } from 'uuid';
 import { TicketTableProps, Ticket } from 'src/types';
 
-type FilterOptions = 'all' | 'new' | 'pending' | 'resolved';
+type FilterOptions = 'all' | 'new' | 'in progress' | 'resolved';
 type SortOptions = 'newest' | 'oldest';
 
 function TicketTable({ tickets }: TicketTableProps) {
@@ -21,7 +21,12 @@ function TicketTable({ tickets }: TicketTableProps) {
     setSelectedFilter(filter);
   };
 
-  const statusFilters: FilterOptions[] = ['all', 'new', 'pending', 'resolved'];
+  const statusFilters: FilterOptions[] = [
+    'all',
+    'new',
+    'in progress',
+    'resolved',
+  ];
 
   const filteredTickets: Ticket[] = tickets
     .filter((ticket) => {
@@ -87,11 +92,17 @@ function TicketTable({ tickets }: TicketTableProps) {
               >
                 {sortOrder === 'newest' ? (
                   <span className="text-green-500">
-                    <FontAwesomeIcon icon={faArrowDown} />
+                    <FontAwesomeIcon
+                      icon={faArrowDown}
+                      className=" ml-1 text-md"
+                    />
                   </span>
                 ) : (
                   <span className="text-red-500">
-                    <FontAwesomeIcon icon={faArrowUp} />
+                    <FontAwesomeIcon
+                      icon={faArrowUp}
+                      className=" ml-1 text-md"
+                    />
                   </span>
                 )}
               </button>
@@ -124,19 +135,17 @@ function TicketTable({ tickets }: TicketTableProps) {
                       />{' '}
                     </span>
                   )}
-                  {ticket.status === 'pending' && (
-                    <span title="Pending">
-                      <FontAwesomeIcon
-                        icon={faExclamationCircle}
-                        className="text-yellow-500"
-                      />
-                    </span>
+                  {ticket.status === 'in progress' && (
+                    <FontAwesomeIcon
+                      icon={faExclamationCircle}
+                      className="block  pl-4 text-yellow-500"
+                    />
                   )}
                   {ticket.status === 'resolved' && (
                     <span title="Resolved">
                       <FontAwesomeIcon
                         icon={faCheck}
-                        className="text-green-500"
+                        className="block  pl-4 text-green-500"
                       />
                     </span>
                   )}

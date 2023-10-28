@@ -38,12 +38,36 @@ export const ticketController: TicketController = {
 
       res.locals.tickets = result.rows;
       return next();
-    } catch (e) {
-      return next({
+    } catch (e: unknown) {
+      const retrieveErr = {
         ...errorTemplate,
-        status: 500,
+        status: 400,
         message: 'Failed to retrieve tickets',
+      };
+      if (e instanceof Error) retrieveErr.message += ' ' + e.message;
+      return next({
+        retrieveErr,
       });
+    }
+  },
+  updateStatus: async (req, res, next) => {
+    try {
+      const { id, newStatus } = req.body;
+      if (!id || !newStatus) {
+        throw new Error('Missing required parameters.');
+      }
+      const text = 'UPDATE tickets SET status = $1 WHERE id = $2';
+      const params = [newStatus, id];
+      await db.query(text, params);
+      return next();
+    } catch (e: unknown) {
+      const updateErr = {
+        ...errorTemplate,
+        status: 400,
+        message: 'Failed to update ticket status',
+      };
+      if (e instanceof Error) updateErr.message += ' ' + e.message;
+      return next(updateErr);
     }
   },
 };
