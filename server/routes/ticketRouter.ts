@@ -8,4 +8,8 @@ ticketRouter.get('/', ticketController.getTickets, (req, res) => {
   return res.status(200).json(res.locals.tickets);
 });
 
+ticketRouter.put('/', ticketController.updateStatus, (req, res) => {
+  return res.status(200).json();
+});
+
 export { ticketRouter };

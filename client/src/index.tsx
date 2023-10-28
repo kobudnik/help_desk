@@ -3,6 +3,8 @@ import './main.css';
 import ReactDOM from 'react-dom/client';
 import { Layout } from './components/Layout';
 import { AdminCenter } from './components/AdminCenter';
+import { TicketsProvider } from './Providers/TicketsProvider';
+import { Error } from './components/Error';
 
 import {
   createBrowserRouter,
@@ -13,9 +15,16 @@ import {
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<Layout />}>
+    <Route path="/" element={<Layout />} errorElement={<Error />}>
       <Route index element={<App />} />
-      <Route path="/admin" element={<AdminCenter />} />
+      <Route
+        path="/admin"
+        element={
+          <TicketsProvider>
+            <AdminCenter />
+          </TicketsProvider>
+        }
+      />
     </Route>,
   ),
 );

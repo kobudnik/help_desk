@@ -1,27 +1,44 @@
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { TicketModal } from './TicketModal';
 import {
-  faPlus,
+  faCircle,
   faCheck,
   faExclamationCircle,
   faArrowUp,
   faArrowDown,
 } from '@fortawesome/free-solid-svg-icons';
 import { v4 as uuidv4 } from 'uuid';
-import { TicketTableProps, Ticket } from 'src/types';
+import { Ticket } from 'src/types';
+import { useTickets } from '../Providers/TicketsProvider';
 
-type FilterOptions = 'all' | 'new' | 'pending' | 'resolved';
+type FilterOptions = 'all' | 'new' | 'in progress' | 'resolved';
 type SortOptions = 'newest' | 'oldest';
 
-function TicketTable({ tickets }: TicketTableProps) {
+function TicketTable() {
   const [selectedFilter, setSelectedFilter] = useState<FilterOptions>('all');
   const [sortOrder, setSortOrder] = useState<SortOptions>('newest');
+  const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
+  const { tickets } = useTickets();
+
+  const openModal = (ticket: Ticket) => {
+    setSelectedTicket(ticket);
+  };
+
+  const closeModal = () => {
+    setSelectedTicket(null);
+  };
 
   const handleChangeFilter = (filter: FilterOptions) => {
     setSelectedFilter(filter);
   };
 
-  const statusFilters: FilterOptions[] = ['all', 'new', 'pending', 'resolved'];
+  const statusFilters: FilterOptions[] = [
+    'all',
+    'new',
+    'in progress',
+    'resolved',
+  ];
 
   const filteredTickets: Ticket[] = tickets
     .filter((ticket) => {
@@ -87,11 +104,17 @@ function TicketTable({ tickets }: TicketTableProps) {
               >
                 {sortOrder === 'newest' ? (
                   <span className="text-green-500">
-                    <FontAwesomeIcon icon={faArrowDown} />
+                    <FontAwesomeIcon
+                      icon={faArrowDown}
+                      className=" ml-1 text-md"
+                    />
                   </span>
                 ) : (
                   <span className="text-red-500">
-                    <FontAwesomeIcon icon={faArrowUp} />
+                    <FontAwesomeIcon
+                      icon={faArrowUp}
+                      className=" ml-1 text-md"
+                    />
                   </span>
                 )}
               </button>
@@ -100,18 +123,15 @@ function TicketTable({ tickets }: TicketTableProps) {
         </thead>
         <tbody>
           {filteredTickets.map((ticket) => {
-            const createdAtDate = new Date(ticket.created_at);
-            const formattedCreatedAt = createdAtDate.toLocaleString('en-US', {
-              year: 'numeric',
-              month: '2-digit',
-              day: '2-digit',
-              hour: '2-digit',
-              minute: '2-digit',
-              second: '2-digit',
-            });
-
             return (
-              <tr key={uuidv4()}>
+              <tr
+                key={uuidv4()}
+                onClick={() => {
+                  console.log(ticket);
+                  openModal(ticket);
+                }}
+                className="hover:bg-gray-900 cursor-pointer"
+              >
                 <td className="px-6 py-4">{ticket.id}</td>
                 <td className="px-6 py-4">{ticket.name}</td>
                 <td className="px-6 py-4">{ticket.email}</td>
@@ -119,35 +139,37 @@ function TicketTable({ tickets }: TicketTableProps) {
                   {ticket.status === 'new' && (
                     <span>
                       <FontAwesomeIcon
-                        icon={faPlus}
+                        icon={faCircle}
                         className=" block  pl-4 text-blue-300"
                       />{' '}
                     </span>
                   )}
-                  {ticket.status === 'pending' && (
-                    <span title="Pending">
-                      <FontAwesomeIcon
-                        icon={faExclamationCircle}
-                        className="text-yellow-500"
-                      />
-                    </span>
+                  {ticket.status === 'in progress' && (
+                    <FontAwesomeIcon
+                      icon={faExclamationCircle}
+                      className="block  pl-4 text-yellow-500"
+                    />
                   )}
                   {ticket.status === 'resolved' && (
                     <span title="Resolved">
                       <FontAwesomeIcon
                         icon={faCheck}
-                        className="text-green-500"
+                        className="block  pl-4 text-green-500"
                       />
                     </span>
                   )}
                 </td>
                 <td className="px-6 py-4">{ticket.subject}</td>
-                <td className="px-6 py-4">{formattedCreatedAt}</td>
+                <td className="px-6 py-4">{ticket.created_at}</td>
               </tr>
             );
           })}
         </tbody>
       </table>
+
+      {selectedTicket && (
+        <TicketModal ticket={selectedTicket} closeModal={closeModal} />
+      )}
     </div>
   );
 }

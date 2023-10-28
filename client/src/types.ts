@@ -6,8 +6,5 @@ export type Ticket = {
   subject: string;
   description: string;
   created_at: string;
-};
-
-export type TicketTableProps = {
-  tickets: Ticket[];
+  response: string | null;
 };

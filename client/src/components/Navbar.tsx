@@ -4,12 +4,11 @@ import { useLocation, Link } from 'react-router-dom';
 function Navbar() {
   const location = useLocation();
   const [pathState, setPathState] = useState(location.pathname);
-  console.log(pathState);
   const pathNavs: {
     [key: string]: { button: string; title: string; href: string };
   } = {
     '/': { button: 'Admin Center', title: 'Help Desk', href: '/admin' },
-    '/admin': { button: 'Home', title: 'Admin Portal', href: '/' },
+    '/admin': { button: 'Home', title: 'Ticket Portal', href: '/' },
   };
   useEffect(() => {
     setPathState(location.pathname);

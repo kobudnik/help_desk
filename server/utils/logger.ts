@@ -10,7 +10,7 @@ const logger = createLogger({
       level: 'error',
     }),
     new transports.File({
-      filename: path.join(__dirname, '../logs', 'combined.log'),
+      filename: path.join(__dirname, '../logs', 'info.log'),
       level: 'info',
     }),
   ],

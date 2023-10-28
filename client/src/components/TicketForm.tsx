@@ -1,9 +1,11 @@
-import { useState, ChangeEvent } from 'react';
+import { useState, ChangeEvent, useEffect } from 'react';
 function TicketForm() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [subject, setSubject] = useState('');
   const [description, setDescription] = useState('');
+
+  const [validationStatus, setValidationStatus] = useState<string>('');
 
   type FormEvent = ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
   const handleNameChange = (e: FormEvent) => {
@@ -22,7 +24,19 @@ function TicketForm() {
     setDescription(e.target.value);
   };
 
+  const handleFocus = (e: FormEvent) => {
+    setValidationStatus('');
+  };
+
   const handleSubmit = async () => {
+    if (name.length < 5 || description.length < 5) {
+      setValidationStatus('Minimum 5 chars');
+      return;
+    }
+    if (email.length < 3 || subject.length < 3) {
+      setValidationStatus('Minimum 3 chars');
+      return;
+    }
     try {
       const response = await fetch('/api/tickets', {
         method: 'POST',
@@ -38,16 +52,25 @@ function TicketForm() {
       });
 
       if (response.ok) {
-        const data = await response.json();
-        console.log('Server response:', data);
+        setValidationStatus('Success!');
       } else {
-        console.error('Server error:', response.status, response.statusText);
+        setValidationStatus('Failed to submit');
       }
-    } catch (error) {
-      console.error('An error occurred:', error);
+    } catch (error: unknown) {
+      let errMessage =
+        'Form submission failed. Please ensure you have filled out the fields properly.';
+      if (error instanceof Object && 'message' in error) {
+        errMessage += ' ' + error.message;
+      }
+      setValidationStatus(errMessage);
     }
-  };
 
+    // Clear form inputs
+    setName('');
+    setEmail('');
+    setSubject('');
+    setDescription('');
+  };
   return (
     <form className="  bg-yellow-100  w-1/2 flex flex-col  items-center justify-center">
       <div className="  w-full">
@@ -68,6 +91,7 @@ function TicketForm() {
               placeholder="John Doe"
               value={name}
               onChange={handleNameChange}
+              onFocus={handleFocus}
               aria-label="Name"
               required
             />
@@ -86,11 +110,12 @@ function TicketForm() {
               name="email"
               type="email"
               autoComplete="email"
-              aria-label="Email"
+              aria-label="email"
               className="block w-full p-2.5 rounded-lg text-white border  bg-gray-700 border-gray-600 focus:ring-2 focus:border-1 focus:ring-blue-500 focus:border-blue-500"
               placeholder="We'll get back to you here."
               value={email}
               onChange={handleEmailChange}
+              onFocus={handleFocus}
               required
             />
           </div>
@@ -113,6 +138,7 @@ function TicketForm() {
               placeholder="What's this about?"
               value={subject}
               onChange={handleSubjectChange}
+              onFocus={handleFocus}
               required
             />
           </div>
@@ -125,12 +151,14 @@ function TicketForm() {
             Description
           </label>
           <textarea
-            id="message"
+            id="description"
             rows={2}
             className="block w-full p-2.5 rounded-lg text-white border  bg-gray-700 border-gray-600 focus:ring-2 focus:border-1 focus:ring-blue-500 focus:border-blue-500"
             value={description}
             onChange={handleDescriptionChange}
-            aria-label="Description"
+            onFocus={handleFocus}
+            aria-label="description"
+            placeholder="Tell us about the issue."
           ></textarea>
         </div>
         <div className="w-full flex justify-center">
@@ -140,8 +168,12 @@ function TicketForm() {
             className="block bg-cyan-900 hover:bg-cyan-950 mt-4 text-white font-bold py-8 px-32 rounded-xl focus:outline-none focus:shadow-outline"
             onClick={handleSubmit}
           >
-            Submit
+            Send
           </button>
+        </div>
+        <div className="w-full flex justify-around text-lg text-primary">
+          {' '}
+          {validationStatus && <span>{validationStatus}</span>}
         </div>
       </div>
     </form>

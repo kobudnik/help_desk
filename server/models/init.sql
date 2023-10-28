@@ -5,5 +5,6 @@ CREATE TABLE IF NOT EXISTS tickets (
     status VARCHAR(20) DEFAULT 'new' CHECK (status IN ('new', 'in progress', 'resolved')),
     subject VARCHAR(255) NOT NULL CHECK (LENGTH(subject) >= 3),
     description TEXT NOT NULL CHECK (LENGTH(description) >= 5),
-    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    response VARCHAR(5000) DEFAULT NULL
 );

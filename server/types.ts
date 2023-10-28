@@ -15,4 +15,10 @@ export type MiddlewareFunction = (
 export type TicketController = {
   addTicket: MiddlewareFunction;
   getTickets: MiddlewareFunction;
+  updateStatus: MiddlewareFunction;
+};
+
+export type LogController = {
+  getInfo: MiddlewareFunction;
+  getErrors: MiddlewareFunction;
 };
