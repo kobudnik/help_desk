@@ -123,7 +123,7 @@ function TicketForm() {
           </label>
           <textarea
             id="message"
-            rows={2}
+            rows={3}
             className="block p-2.5 w-3/4 max-h-44 text-md  rounded-lg border  bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:border-blue-500"
             placeholder="Tell us about the issue."
             value={description}
