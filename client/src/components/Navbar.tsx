@@ -8,7 +8,7 @@ function Navbar() {
     [key: string]: { button: string; title: string; href: string };
   } = {
     '/': { button: 'Admin Center', title: 'Help Desk', href: '/admin' },
-    '/admin': { button: 'Home', title: 'Admin Portal', href: '/' },
+    '/admin': { button: 'Home', title: 'Ticket Portal', href: '/' },
   };
   useEffect(() => {
     setPathState(location.pathname);

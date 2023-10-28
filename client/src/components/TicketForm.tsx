@@ -52,7 +52,7 @@ function TicketForm() {
       });
 
       if (response.ok) {
-        setValidationStatus('Form submitted successfully!');
+        setValidationStatus('Success!!');
       }
     } catch (error: unknown) {
       let errMessage =
