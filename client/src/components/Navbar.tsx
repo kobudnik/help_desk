@@ -1,6 +1,20 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
+import { useLocation, Link } from 'react-router-dom';
 
 function Navbar() {
+  const location = useLocation();
+  const [pathState, setPathState] = useState(location.pathname);
+  console.log(pathState);
+  const pathNavs: {
+    [key: string]: { button: string; title: string; href: string };
+  } = {
+    '/': { button: 'Admin Center', title: 'Help Desk', href: '/admin' },
+    '/admin': { button: 'Home', title: 'Admin Portal', href: '/' },
+  };
+  useEffect(() => {
+    setPathState(location.pathname);
+  }, [location.pathname]);
+
   return (
     <nav className="bg-white border-gray-200 dark:bg-gray-900 w-screen  h-20">
       <div className="flex flex-wrap items-center justify-between  p-4">
@@ -11,11 +25,12 @@ function Navbar() {
         </a>
         <div className="flex md:order-2 w-40">
           <button
-            type="button"
             className="text-white bg-blue-700 h-12  hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-lg  rounded-lg text-lg px-4 py-2 text-center w-full
            md:mr-0"
           >
-            Admin Center
+            <Link to={pathNavs[pathState].href} className="text-white">
+              {pathNavs[pathState].button}
+            </Link>
           </button>
         </div>
         <div
@@ -29,7 +44,7 @@ function Navbar() {
                 "
               >
                 {' '}
-                Help Desk
+                {pathNavs[pathState].title}
               </span>
             </li>
           </ul>
