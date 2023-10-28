@@ -168,7 +168,7 @@ function TicketForm() {
             className="block bg-cyan-900 hover:bg-cyan-950 mt-4 text-white font-bold py-8 px-32 rounded-xl focus:outline-none focus:shadow-outline"
             onClick={handleSubmit}
           >
-            Submit
+            Send
           </button>
         </div>
         <div className="w-full flex justify-around text-lg text-primary">

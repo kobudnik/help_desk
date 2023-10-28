@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { TicketModal } from './TicketModal';
 import {
-  faPlus,
+  faCircle,
   faCheck,
   faExclamationCircle,
   faArrowUp,
@@ -139,7 +139,7 @@ function TicketTable() {
                   {ticket.status === 'new' && (
                     <span>
                       <FontAwesomeIcon
-                        icon={faPlus}
+                        icon={faCircle}
                         className=" block  pl-4 text-blue-300"
                       />{' '}
                     </span>

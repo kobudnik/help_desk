@@ -2,6 +2,8 @@ import { useState } from 'react';
 import Modal from 'react-modal';
 import { Ticket } from '../types';
 import { useTickets } from '../Providers/TicketsProvider';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
 interface TicketModalProps {
   ticket: Ticket;
@@ -10,6 +12,7 @@ interface TicketModalProps {
 
 function TicketModal({ ticket, closeModal }: TicketModalProps) {
   const [reply, setReply] = useState<string>('');
+  const [sentStatus, setSentStatus] = useState<boolean>(false);
   const { tickets, setTickets } = useTickets();
   const handleResponseChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setReply(e.target.value);
@@ -38,18 +41,17 @@ function TicketModal({ ticket, closeModal }: TicketModalProps) {
           }
         });
         setTickets(newState);
-        return true;
+        setSentStatus(true);
+        return;
       } else {
         console.error(
           'Failed to update ticket status:',
           response.status,
           response.statusText,
         );
-        return false;
       }
     } catch (error) {
       console.error('An error occurred:', error);
-      return false;
     }
   };
   return (
@@ -60,6 +62,11 @@ function TicketModal({ ticket, closeModal }: TicketModalProps) {
       ariaHideApp={false}
     >
       <div className="modal-content text-blue-800">
+        <FontAwesomeIcon
+          icon={faTimes}
+          className="absolute top-4 right-4 cursor-pointer close-icon text-3xl hover:text-blue-500"
+          onClick={closeModal}
+        />
         <div className="flex flex-col items-center gap-4  mt-24">
           <h2>Ticket Details</h2>
           <div>
@@ -105,27 +112,23 @@ function TicketModal({ ticket, closeModal }: TicketModalProps) {
                   onClick={() => handleSendResponse('resolved')}
                   className=" px-20 py-8 bg-blue-950 hover:bg-blue-900 text-white rounded-xl"
                 >
-                  Send Response
+                  Reply
                 </button>
               )}
             </div>
           )}
-          <button
-            className=" px-20 py-8 bg-blue-950 hover:bg-blue-900 text-white rounded-xl"
-            onClick={closeModal}
-          >
-            Close
-          </button>
+
           {ticket.status === 'new' && (
             <button
               className=" px-20 py-8 bg-blue-950 hover:bg-blue-900 text-white rounded-xl"
               onClick={() => handleSendResponse('in progress')}
             >
-              Set Pending
+              Mark Pending
             </button>
           )}
         </div>
       </div>
+      {sentStatus && <span className="text-green-500"> Success! </span>}
     </Modal>
   );
 }
