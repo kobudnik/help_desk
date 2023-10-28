@@ -3,6 +3,6 @@ CREATE TABLE IF NOT EXISTS tickets (
     name VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL,
     status VARCHAR(20) DEFAULT 'new' CHECK (status IN ('new', 'in progress', 'resolved')),
-    title VARCHAR(255) NOT NULL,
+    subject VARCHAR(255) NOT NULL,
     description TEXT NOT NULL
 );
