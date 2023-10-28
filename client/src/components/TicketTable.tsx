@@ -9,15 +9,17 @@ import {
   faArrowDown,
 } from '@fortawesome/free-solid-svg-icons';
 import { v4 as uuidv4 } from 'uuid';
-import { TicketTableProps, Ticket } from 'src/types';
+import { Ticket } from 'src/types';
+import { useTickets } from '../Providers/TicketsProvider';
 
 type FilterOptions = 'all' | 'new' | 'in progress' | 'resolved';
 type SortOptions = 'newest' | 'oldest';
 
-function TicketTable({ tickets }: TicketTableProps) {
+function TicketTable() {
   const [selectedFilter, setSelectedFilter] = useState<FilterOptions>('all');
   const [sortOrder, setSortOrder] = useState<SortOptions>('newest');
   const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
+  const { tickets } = useTickets();
 
   const openModal = (ticket: Ticket) => {
     setSelectedTicket(ticket);

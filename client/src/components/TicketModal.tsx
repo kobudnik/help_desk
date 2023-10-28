@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Modal from 'react-modal';
 import { Ticket } from '../types';
+import { useTickets } from '../Providers/TicketsProvider';
 
 interface TicketModalProps {
   ticket: Ticket;
@@ -9,6 +10,7 @@ interface TicketModalProps {
 
 function TicketModal({ ticket, closeModal }: TicketModalProps) {
   const [response, setResponse] = useState('');
+  const { tickets, setTickets } = useTickets();
   const handleResponseChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setResponse(e.target.value);
   };
@@ -28,7 +30,14 @@ function TicketModal({ ticket, closeModal }: TicketModalProps) {
         body: requestBody,
       });
       if (response.ok) {
-        console.log('Ticket status updated successfully.');
+        const newState = [...tickets].map((el) => {
+          if (el.id === ticket.id) {
+            return { ...el, status: 'resolved' };
+          } else {
+            return el;
+          }
+        });
+        setTickets(newState);
         return true;
       } else {
         console.error(
