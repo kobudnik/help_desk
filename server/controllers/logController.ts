@@ -5,9 +5,9 @@ import { LogController } from '../types';
 
 export const logController: LogController = {
   getInfo: async (req, res, next) => {
-    const combinedPath = path.resolve(__dirname, '..', 'logs', 'combined.log');
+    const infoPath = path.resolve(__dirname, '..', 'logs', 'info.log');
     try {
-      const logData = fs.readFileSync(combinedPath, 'utf8');
+      const logData = fs.readFileSync(infoPath, 'utf8');
 
       const logEntries = logData
         .split('\n')
@@ -53,30 +53,6 @@ export const logController: LogController = {
       return next();
     } catch (error) {
       return next({ error: 'Failed to read error logs file' });
-    }
-  },
-  getResponses: (req, res, next) => {
-    const responsePath = path.resolve(__dirname, '..', 'logs', 'resolved.log');
-    try {
-      const responseData = fs.readFileSync(responsePath, 'utf8');
-      const responseEntries = responseData
-        .split('\n')
-        .filter(Boolean)
-        .map((line) => {
-          try {
-            return JSON.parse(line);
-          } catch (error) {
-            return {
-              level: 'error',
-              message: 'Failed to parse log entry',
-              raw: line,
-            };
-          }
-        });
-      res.locals.responseEntries = responseEntries;
-      return next();
-    } catch (error) {
-      res.status(500).json({ error: 'Failed to read response-logs file' });
     }
   },
 };

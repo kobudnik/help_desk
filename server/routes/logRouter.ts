@@ -8,8 +8,5 @@ logRouter.get('/', logController.getInfo, (req, res) => {
 logRouter.get('/errors', logController.getErrors, (req, res) => {
   res.status(200).json(res.locals.errorEntries);
 });
-logRouter.get('/responses', logController.getResponses, (req, res) => {
-  res.status(200).json(res.locals.responseEntries);
-});
 
 export { logRouter };

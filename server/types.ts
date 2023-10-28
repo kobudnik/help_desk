@@ -20,6 +20,5 @@ export type TicketController = {
 
 export type LogController = {
   getInfo: MiddlewareFunction;
-  getResponses: MiddlewareFunction;
   getErrors: MiddlewareFunction;
 };

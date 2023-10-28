@@ -16,7 +16,6 @@ app.use('/tickets', ticketRouter);
 app.use('/logs', logRouter);
 
 app.get('*', (req, res) => {
-  logger.info('A request to the root route just happened.');
   const pathToIndex =
     NODE_ENV === 'production'
       ? path.resolve(__dirname, '../client/index.html')

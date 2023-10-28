@@ -1,5 +1,6 @@
 import { TicketController } from '../types';
 import db from '../models/deskDB';
+import { logger } from '../utils/logger';
 const errorTemplate = {
   log: 'Error in ticket middleware',
   status: 400,
@@ -23,6 +24,7 @@ export const ticketController: TicketController = {
 
       const insertedTicketId = result.rows[0].id;
       res.locals.id = insertedTicketId;
+      logger.info('Submitted new ticket');
       return next();
     } catch (e: unknown) {
       const insertErr = {
@@ -62,6 +64,11 @@ export const ticketController: TicketController = {
       const text = 'UPDATE tickets SET status = $1 WHERE id = $2';
       const params = [newStatus, id];
       await db.query(text, params);
+      if (newStatus === 'resolved') {
+        logger.info(`Normally send email here. Responded to ticket id#${id}`);
+      } else if (newStatus === 'in progress')
+        logger.info(`id #${id}: Status upgraded to in progress`);
+
       return next();
     } catch (e: unknown) {
       const updateErr = {
