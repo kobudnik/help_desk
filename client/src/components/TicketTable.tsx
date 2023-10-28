@@ -1,37 +1,47 @@
-import { TicketTableProps, Ticket } from 'src/types';
-import { v4 as uuidv4 } from 'uuid';
+import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faPlus,
   faCheck,
   faExclamationCircle,
+  faArrowUp,
+  faArrowDown,
 } from '@fortawesome/free-solid-svg-icons';
-import { useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
+import { TicketTableProps, Ticket } from 'src/types';
+
+type FilterOptions = 'all' | 'new' | 'pending' | 'resolved';
+type SortOptions = 'newest' | 'oldest';
 
 function TicketTable({ tickets }: TicketTableProps) {
-  const [selectedFilter, setSelectedFilter] = useState<
-    'all' | 'new' | 'pending' | 'resolved'
-  >('all');
+  const [selectedFilter, setSelectedFilter] = useState<FilterOptions>('all');
+  const [sortOrder, setSortOrder] = useState<SortOptions>('newest');
 
-  const handleChangeFilter = (
-    filter: 'all' | 'new' | 'pending' | 'resolved',
-  ) => {
+  const handleChangeFilter = (filter: FilterOptions) => {
     setSelectedFilter(filter);
   };
 
-  const statusFilters: Array<'all' | 'new' | 'pending' | 'resolved'> = [
-    'all',
-    'new',
-    'pending',
-    'resolved',
-  ];
+  const statusFilters: FilterOptions[] = ['all', 'new', 'pending', 'resolved'];
 
-  const filteredTickets: Ticket[] = tickets.filter((ticket) => {
-    if (selectedFilter === 'all') {
-      return true;
-    }
-    return ticket.status === selectedFilter;
-  });
+  const filteredTickets: Ticket[] = tickets
+    .filter((ticket) => {
+      return selectedFilter === 'all' || ticket.status === selectedFilter;
+    })
+    .sort((a, b) => {
+      if (sortOrder === 'newest') {
+        return (
+          new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+        );
+      } else {
+        return (
+          new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+        );
+      }
+    });
+
+  const handleSortChange = (order: SortOptions) => {
+    setSortOrder(order);
+  };
 
   return (
     <div>
@@ -69,7 +79,22 @@ function TicketTable({ tickets }: TicketTableProps) {
               Subject
             </th>
             <th scope="col" className="px-6 py-3">
-              Created At
+              Created At{' '}
+              <button
+                onClick={() =>
+                  handleSortChange(sortOrder === 'newest' ? 'oldest' : 'newest')
+                }
+              >
+                {sortOrder === 'newest' ? (
+                  <span className="text-green-500">
+                    <FontAwesomeIcon icon={faArrowDown} />
+                  </span>
+                ) : (
+                  <span className="text-red-500">
+                    <FontAwesomeIcon icon={faArrowUp} />
+                  </span>
+                )}
+              </button>
             </th>
           </tr>
         </thead>
@@ -95,7 +120,7 @@ function TicketTable({ tickets }: TicketTableProps) {
                     <span>
                       <FontAwesomeIcon
                         icon={faPlus}
-                        className="text-blue-400"
+                        className=" block  pl-4 text-blue-300"
                       />{' '}
                     </span>
                   )}
