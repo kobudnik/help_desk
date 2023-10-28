@@ -10,6 +10,9 @@ export const ticketController: TicketController = {
   addTicket: async (req, res, next) => {
     try {
       const { name, email, subject, description } = req.body;
+      if (!name || !email || !subject || !description) {
+        throw new Error('Missing required parameters.');
+      }
 
       const text = `INSERT INTO tickets (name, email, subject, description)
                    VALUES ($1, $2, $3, $4)
@@ -25,7 +28,7 @@ export const ticketController: TicketController = {
       const insertErr = {
         ...errorTemplate,
         status: 400,
-        message: 'Ticket failed to add',
+        message: 'Ticket failed to add.',
       };
       if (e instanceof Error) insertErr.message += ' ' + e.message;
       return next(insertErr);
@@ -42,7 +45,7 @@ export const ticketController: TicketController = {
       const retrieveErr = {
         ...errorTemplate,
         status: 400,
-        message: 'Failed to retrieve tickets',
+        message: 'Failed to retrieve tickets.',
       };
       if (e instanceof Error) retrieveErr.message += ' ' + e.message;
       return next({
@@ -64,7 +67,7 @@ export const ticketController: TicketController = {
       const updateErr = {
         ...errorTemplate,
         status: 400,
-        message: 'Failed to update ticket status',
+        message: 'Failed to update ticket status.',
       };
       if (e instanceof Error) updateErr.message += ' ' + e.message;
       return next(updateErr);
