@@ -123,16 +123,6 @@ function TicketTable() {
         </thead>
         <tbody>
           {filteredTickets.map((ticket) => {
-            const createdAtDate = new Date(ticket.created_at);
-            const formattedCreatedAt = createdAtDate.toLocaleString('en-US', {
-              year: 'numeric',
-              month: '2-digit',
-              day: '2-digit',
-              hour: '2-digit',
-              minute: '2-digit',
-              second: '2-digit',
-            });
-
             return (
               <tr
                 key={uuidv4()}
@@ -170,7 +160,7 @@ function TicketTable() {
                   )}
                 </td>
                 <td className="px-6 py-4">{ticket.subject}</td>
-                <td className="px-6 py-4">{formattedCreatedAt}</td>
+                <td className="px-6 py-4">{ticket.created_at}</td>
               </tr>
             );
           })}

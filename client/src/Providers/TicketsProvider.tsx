@@ -27,15 +27,22 @@ export function TicketsProvider({ children }: TicketsProviderProps) {
     fetch('/api/tickets')
       .then((response) => response.json())
       .then((fetchedTickets: Ticket[]) => {
-        setTickets(fetchedTickets);
+        const formattedTickets = fetchedTickets.map((ticket) => {
+          const createdAtDate = new Date(ticket.created_at);
+          const formattedCreatedAt = createdAtDate.toLocaleString('en-US', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+          });
+          return { ...ticket, created_at: formattedCreatedAt };
+        });
+        setTickets(formattedTickets);
+        console.log(tickets);
       });
   }, []);
-
-  // const useFiltered = useCallback(
-  //   (desiredStatus: string) =>
-  //     tickets.filter(({ status }) => desiredStatus === status),
-  //   [tickets],
-  // );
 
   const contextValue = useMemo(
     () => ({
