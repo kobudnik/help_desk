@@ -4,7 +4,6 @@ import { useLocation, Link } from 'react-router-dom';
 function Navbar() {
   const location = useLocation();
   const [pathState, setPathState] = useState(location.pathname);
-  console.log(pathState);
   const pathNavs: {
     [key: string]: { button: string; title: string; href: string };
   } = {

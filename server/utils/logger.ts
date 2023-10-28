@@ -13,6 +13,10 @@ const logger = createLogger({
       filename: path.join(__dirname, '../logs', 'combined.log'),
       level: 'info',
     }),
+    new transports.File({
+      filename: path.join(__dirname, '../logs', 'resolved.log'),
+      level: 'resolved',
+    }),
   ],
 });
 
