@@ -24,14 +24,18 @@ function Navbar() {
           </span>
         </a>
         <div className="flex md:order-2 w-40">
-          <button
-            className="text-white bg-blue-700 h-12  hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-lg  rounded-lg text-lg px-4 py-2 text-center w-full
-           md:mr-0"
+          <Link
+            to={pathNavs[pathState].href}
+            className="text-white w-full outline-none"
           >
-            <Link to={pathNavs[pathState].href} className="text-white">
+            <button
+              className="text-white bg-blue-700 h-12  hover:bg-blue-800  focus:outline-none font-lg  rounded-lg text-lg px-4 py-2 text-center w-full
+           md:mr-0"
+            >
+              {' '}
               {pathNavs[pathState].button}
-            </Link>
-          </button>
+            </button>
+          </Link>
         </div>
         <div
           className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
