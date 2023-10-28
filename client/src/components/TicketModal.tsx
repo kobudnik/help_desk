@@ -15,7 +15,7 @@ function TicketModal({ ticket, closeModal }: TicketModalProps) {
     setResponse(e.target.value);
   };
 
-  const handleSendResponse = async () => {
+  const handleSendResponse = async (updatedStatus: string) => {
     const requestBody = JSON.stringify({
       newStatus: 'resolved',
       id: ticket.id,
@@ -32,7 +32,7 @@ function TicketModal({ ticket, closeModal }: TicketModalProps) {
       if (response.ok) {
         const newState = [...tickets].map((el) => {
           if (el.id === ticket.id) {
-            return { ...el, status: 'resolved' };
+            return { ...el, status: updatedStatus };
           } else {
             return el;
           }
@@ -93,7 +93,14 @@ function TicketModal({ ticket, closeModal }: TicketModalProps) {
                 onChange={handleResponseChange}
                 className="w-full"
               />
-              <button onClick={handleSendResponse}>Send Response</button>
+              {response.length > 0 && (
+                <button
+                  onClick={() => handleSendResponse('resolved')}
+                  className=" px-20 py-8 bg-blue-950 hover:bg-blue-900 text-white rounded-xl"
+                >
+                  Send Response
+                </button>
+              )}
             </div>
           )}
           <button
@@ -102,6 +109,14 @@ function TicketModal({ ticket, closeModal }: TicketModalProps) {
           >
             Close
           </button>
+          {ticket.status === 'new' && (
+            <button
+              className=" px-20 py-8 bg-blue-950 hover:bg-blue-900 text-white rounded-xl"
+              onClick={() => handleSendResponse('in progress')}
+            >
+              Set Pending
+            </button>
+          )}
         </div>
       </div>
     </Modal>
