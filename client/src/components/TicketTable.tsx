@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import TicketModal from './TicketModal';
 import {
   faPlus,
   faCheck,
@@ -16,6 +17,15 @@ type SortOptions = 'newest' | 'oldest';
 function TicketTable({ tickets }: TicketTableProps) {
   const [selectedFilter, setSelectedFilter] = useState<FilterOptions>('all');
   const [sortOrder, setSortOrder] = useState<SortOptions>('newest');
+  const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
+
+  const openModal = (ticket: Ticket) => {
+    setSelectedTicket(ticket);
+  };
+
+  const closeModal = () => {
+    setSelectedTicket(null);
+  };
 
   const handleChangeFilter = (filter: FilterOptions) => {
     setSelectedFilter(filter);
@@ -122,7 +132,13 @@ function TicketTable({ tickets }: TicketTableProps) {
             });
 
             return (
-              <tr key={uuidv4()}>
+              <tr
+                key={uuidv4()}
+                onClick={() => {
+                  console.log(ticket);
+                  openModal(ticket);
+                }}
+              >
                 <td className="px-6 py-4">{ticket.id}</td>
                 <td className="px-6 py-4">{ticket.name}</td>
                 <td className="px-6 py-4">{ticket.email}</td>
@@ -157,6 +173,10 @@ function TicketTable({ tickets }: TicketTableProps) {
           })}
         </tbody>
       </table>
+
+      {selectedTicket && (
+        <TicketModal ticket={selectedTicket} closeModal={closeModal} />
+      )}
     </div>
   );
 }
