@@ -20,7 +20,7 @@ function TicketModal({ ticket, closeModal }: TicketModalProps) {
 
   const handleSendResponse = async (updatedStatus: string) => {
     const requestBody = JSON.stringify({
-      newStatus: 'resolved',
+      newStatus: updatedStatus,
       id: ticket.id,
       response: reply.length > 0 ? reply : null,
     });
