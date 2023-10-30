@@ -127,7 +127,6 @@ function TicketTable() {
               <tr
                 key={uuidv4()}
                 onClick={() => {
-                  console.log(ticket);
                   openModal(ticket);
                 }}
                 className="hover:bg-gray-900 cursor-pointer"

@@ -40,7 +40,6 @@ export function TicketsProvider({ children }: TicketsProviderProps) {
           return { ...ticket, created_at: formattedCreatedAt };
         });
         setTickets(formattedTickets);
-        console.log(tickets);
       });
   }, []);
 

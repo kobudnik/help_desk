@@ -7,7 +7,7 @@ const host = process.env.POSTGRES_HOST || 'localhost';
 const user = process.env.POSTGRES_USER || 'postgres';
 const password = process.env.POSTGRES_PASS || 'postgres';
 const database = process.env.POSTGRES_NAME || 'db_desk';
-const port = Number(process.env.POSTGRES_PORT) || 5433;
+const port = Number(process.env.POSTGRES_PORT) || 5432;
 
 const pool = new Pool({
   host,
