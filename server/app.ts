@@ -1,13 +1,11 @@
 import express, { Request, Response, NextFunction } from 'express';
 import { ServerError } from './types';
-import helmet from 'helmet';
 import path from 'path';
 import { logger } from './utils/logger';
 import { ticketRouter } from './routes/ticketRouter';
 import { logRouter } from './routes/logRouter';
 const { NODE_ENV } = process.env;
 const app = express();
-app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
