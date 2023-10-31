@@ -15,23 +15,17 @@ The app is deploy via AWS. You can visit the <a href=http://help-desk-ui-env.eba
 The app was developed leveraging a Postgres container. In order to run the app in dev mode:
 
 1) Clone the repo and cd into it
-2) Cd to server/models
-3) Generate a .env file with the following:
-   ```POSTGRES_HOST=localhost
-    POSTGRES_NAME=db_desk
-    POSTGRES_PORT=5432
-    POSTGRES_USER=postgres
-    POSTGRES_PASS=postgres
-    POSTGRES_VERSION=13.4
-    COMPOSE_PROJECT_NAME=db_desk
-4) Issue the command `npm run compose && npm run dev`
-5) Head to localhost:3000 to use the app.
+2) `npm install`
+3) Issue `npm run compose` and wait a few seconds for the db to initialize. (You must have Docker installed) 
+4) Issue `npm run dev`
+5) Head to localhost:8080 to use the app.
 
 
 ### Logs
-In order to see the logs generated on the server, you may issue either 
+In order to see the logs generated on the server (running on PORT 3000), you may issue either 
 - `curl http://localhost:3000/logs/` to get all logs
-- `curl http://localhost:3000/logs/errors` to get only the errors. 
+- `curl http://localhost:3000/logs/errors` to get only the errors.
+- You can also check out the logs on the AWS link by adding `/logs` to the path of the base url. 
 
 ## Enjoy!
 
