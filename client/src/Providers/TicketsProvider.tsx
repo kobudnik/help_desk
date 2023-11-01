@@ -4,7 +4,6 @@ import {
   useContext,
   useEffect,
   useMemo,
-  useCallback,
   ReactNode,
   Dispatch,
   SetStateAction,
@@ -16,10 +15,13 @@ interface TicketsContextType {
   tickets: Ticket[];
   setTickets: Dispatch<SetStateAction<Ticket[]>>;
 }
+
 const TicketsContext = createContext<TicketsContextType | undefined>(undefined);
+
 interface TicketsProviderProps {
   children: ReactNode;
 }
+
 export function TicketsProvider({ children }: TicketsProviderProps) {
   const [tickets, setTickets] = useState<Ticket[]>([]);
 
@@ -47,7 +49,6 @@ export function TicketsProvider({ children }: TicketsProviderProps) {
     () => ({
       tickets,
       setTickets,
-      // useFiltered,
     }),
     [tickets],
   );

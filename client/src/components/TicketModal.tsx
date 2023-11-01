@@ -43,7 +43,6 @@ function TicketModal({ ticket, closeModal }: TicketModalProps) {
         setTickets(newState);
         setSentStatus(true);
         setReply('');
-        return;
       } else {
         console.error(
           'Failed to update ticket status:',

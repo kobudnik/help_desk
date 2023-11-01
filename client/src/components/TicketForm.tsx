@@ -1,13 +1,14 @@
-import { useState, ChangeEvent, useEffect } from 'react';
-function TicketForm() {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [subject, setSubject] = useState('');
-  const [description, setDescription] = useState('');
+import { useState, ChangeEvent } from 'react';
 
+function TicketForm() {
+  const [name, setName] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
+  const [subject, setSubject] = useState<string>('');
+  const [description, setDescription] = useState<string>('');
   const [validationStatus, setValidationStatus] = useState<string>('');
 
   type FormEvent = ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
+
   const handleNameChange = (e: FormEvent) => {
     setName(e.target.value);
   };
@@ -59,21 +60,21 @@ function TicketForm() {
     } catch (error: unknown) {
       let errMessage =
         'Form submission failed. Please ensure you have filled out the fields properly.';
+
       if (error instanceof Object && 'message' in error) {
         errMessage += ' ' + error.message;
       }
       setValidationStatus(errMessage);
     }
-
-    // Clear form inputs
     setName('');
     setEmail('');
     setSubject('');
     setDescription('');
   };
+
   return (
-    <form className="  bg-yellow-100  w-1/2 flex flex-col  items-center justify-center">
-      <div className="  w-full">
+    <form className=" bg-yellow-100 w-1/2 flex flex-col items-center justify-center">
+      <div className=" w-full">
         <div className="sm:col-span-4">
           <label
             htmlFor="name"
@@ -87,7 +88,7 @@ function TicketForm() {
               name="name"
               id="name"
               autoComplete="username"
-              className="block w-full p-2.5 rounded-lg text-white border  bg-gray-700 border-gray-600 focus:ring-2 focus:border-1 focus:ring-blue-500 focus:border-blue-500"
+              className="block w-full p-2.5 rounded-lg text-white border bg-gray-700 border-gray-600 focus:ring-2 focus:border-1 focus:ring-blue-500 focus:border-blue-500"
               placeholder="John Doe"
               value={name}
               onChange={handleNameChange}
@@ -111,7 +112,7 @@ function TicketForm() {
               type="email"
               autoComplete="email"
               aria-label="email"
-              className="block w-full p-2.5 rounded-lg text-white border  bg-gray-700 border-gray-600 focus:ring-2 focus:border-1 focus:ring-blue-500 focus:border-blue-500"
+              className="block w-full p-2.5 rounded-lg text-white border bg-gray-700 border-gray-600 focus:ring-2 focus:border-1 focus:ring-blue-500 focus:border-blue-500"
               placeholder="We'll get back to you here."
               value={email}
               onChange={handleEmailChange}
@@ -120,7 +121,6 @@ function TicketForm() {
             />
           </div>
         </div>
-
         <div className="col-span-full ">
           <label
             htmlFor="subject"
@@ -134,7 +134,7 @@ function TicketForm() {
               name="subject"
               id="subject"
               aria-label="subject"
-              className="block w-full p-2.5 rounded-lg text-white border  bg-gray-700 border-gray-600 focus:ring-2 focus:border-1 focus:ring-blue-500 focus:border-blue-500"
+              className="block w-full p-2.5 rounded-lg text-white border bg-gray-700 border-gray-600 focus:ring-2 focus:border-1 focus:ring-blue-500 focus:border-blue-500"
               placeholder="What's this about?"
               value={subject}
               onChange={handleSubjectChange}
@@ -153,7 +153,7 @@ function TicketForm() {
           <textarea
             id="description"
             rows={2}
-            className="block w-full p-2.5 rounded-lg text-white border  bg-gray-700 border-gray-600 focus:ring-2 focus:border-1 focus:ring-blue-500 focus:border-blue-500"
+            className="block w-full p-2.5 rounded-lg text-white border bg-gray-700 border-gray-600 focus:ring-2 focus:border-1 focus:ring-blue-500 focus:border-blue-500"
             value={description}
             onChange={handleDescriptionChange}
             onFocus={handleFocus}

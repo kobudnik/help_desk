@@ -1,4 +1,3 @@
-import db from '../models/deskDB';
 import path from 'path';
 import * as fs from 'fs';
 import { LogController } from '../types';
