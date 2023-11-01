@@ -69,9 +69,9 @@ export const ticketController: TicketController = {
       }
       await db.query(text, params);
       if (newStatus === 'resolved') {
-        let logInfo = `Normally send email here. Responded to ticket id#${id}.`;
-        if (response) logInfo += '' + response;
-        logger.info(logInfo);
+        logger.info(
+          `Normally send email here. Responded to ticket id#${id}: ${response}`,
+        );
       } else if (newStatus === 'in progress')
         logger.info(`id #${id}: Status upgraded to in progress`);
 
