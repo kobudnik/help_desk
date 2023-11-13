@@ -9,10 +9,10 @@ import {
   faArrowDown,
 } from '@fortawesome/free-solid-svg-icons';
 import { v4 as uuidv4 } from 'uuid';
-import { Ticket } from 'src/types';
+import { Ticket, TicketStatus } from 'src/types';
 import { useTickets } from '../Providers/TicketsProvider';
 
-type FilterOptions = 'all' | 'new' | 'in progress' | 'resolved';
+type FilterOptions = 'all' | TicketStatus;
 type SortOptions = 'newest' | 'oldest';
 
 function TicketTable() {

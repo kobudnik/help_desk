@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Modal from 'react-modal';
-import { Ticket } from '../types';
+import { Ticket, TicketStatus } from '../types';
 import { useTickets } from '../Providers/TicketsProvider';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
@@ -14,11 +14,19 @@ function TicketModal({ ticket, closeModal }: TicketModalProps) {
   const [reply, setReply] = useState<string>('');
   const [sentStatus, setSentStatus] = useState<boolean>(false);
   const { tickets, setTickets } = useTickets();
+  const [displayPendingButton, setDisplayPendingButton] = useState<boolean>(
+    ticket.status === 'new',
+  );
+  const [displayedResponse, setDisplayedResponse] = useState<string | null>(
+    ticket.response,
+  );
   const handleResponseChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setReply(e.target.value);
   };
 
-  const handleSendResponse = async (updatedStatus: string) => {
+  const handleSendResponse = async (
+    updatedStatus: Exclude<TicketStatus, 'new'>,
+  ) => {
     const requestBody = JSON.stringify({
       newStatus: updatedStatus,
       id: ticket.id,
@@ -42,6 +50,10 @@ function TicketModal({ ticket, closeModal }: TicketModalProps) {
         });
         setTickets(newState);
         setSentStatus(true);
+        setDisplayPendingButton(false);
+        if (updatedStatus === 'resolved') {
+          setDisplayedResponse(reply);
+        }
         setReply('');
       } else {
         console.error(
@@ -67,7 +79,7 @@ function TicketModal({ ticket, closeModal }: TicketModalProps) {
           className="absolute top-4 right-4 cursor-pointer close-icon text-3xl hover:text-blue-500"
           onClick={closeModal}
         />
-        {ticket.status === 'new' && (
+        {displayPendingButton && (
           <button
             className=" px-8 py-4 bg-yellow-500 hover:bg-yellow-400 text-white rounded-xl"
             onClick={() => handleSendResponse('in progress')}
@@ -98,14 +110,14 @@ function TicketModal({ ticket, closeModal }: TicketModalProps) {
           <div>
             <strong>Created At:</strong> {ticket.created_at}
           </div>
-          {ticket.response !== null && (
+          {displayedResponse && (
             <div>
               {' '}
               <strong>Reply: </strong>
-              {ticket.response}{' '}
+              {displayedResponse}{' '}
             </div>
           )}
-          {ticket.status !== 'resolved' && (
+          {ticket.status !== 'resolved' && displayedResponse === null && (
             <div className="response-area  w-full">
               <div className="flex justify-center">
                 <textarea
