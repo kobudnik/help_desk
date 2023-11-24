@@ -14,7 +14,7 @@ function TicketModal({ ticket, closeModal }: TicketModalProps) {
   const [reply, setReply] = useState<string>('');
   const [sentStatus, setSentStatus] = useState<boolean>(false);
   const { tickets, setTickets } = useTickets();
-  const [displayPendingButton, setDisplayPendingButton] = useState<boolean>(
+  const [togglePending, setTogglePending] = useState<boolean>(
     ticket.status === 'new',
   );
   const [displayedResponse, setDisplayedResponse] = useState<string | null>(
@@ -43,18 +43,22 @@ function TicketModal({ ticket, closeModal }: TicketModalProps) {
       if (response.ok) {
         const newState = [...tickets].map((el) => {
           if (el.id === ticket.id) {
-            return { ...el, status: updatedStatus, response: reply };
+            return {
+              ...el,
+              status: updatedStatus,
+              response: updatedStatus === 'resolved' ? reply : null,
+            };
           } else {
             return el;
           }
         });
         setTickets(newState);
         setSentStatus(true);
-        setDisplayPendingButton(false);
+        setTogglePending(false);
         if (updatedStatus === 'resolved') {
           setDisplayedResponse(reply);
+          setReply('');
         }
-        setReply('');
       } else {
         console.error(
           'Failed to update ticket status:',
@@ -66,6 +70,7 @@ function TicketModal({ ticket, closeModal }: TicketModalProps) {
       console.error('An error occurred:', error);
     }
   };
+
   return (
     <Modal
       isOpen={!!ticket}
@@ -79,7 +84,7 @@ function TicketModal({ ticket, closeModal }: TicketModalProps) {
           className="absolute top-4 right-4 cursor-pointer close-icon text-3xl hover:text-blue-500"
           onClick={closeModal}
         />
-        {displayPendingButton && (
+        {togglePending && (
           <button
             className=" px-8 py-4 bg-yellow-500 hover:bg-yellow-400 text-white rounded-xl"
             onClick={() => handleSendResponse('in progress')}
@@ -125,10 +130,11 @@ function TicketModal({ ticket, closeModal }: TicketModalProps) {
                   placeholder="Type your response here."
                   value={reply}
                   onChange={handleResponseChange}
+                  onFocus={() => setSentStatus(false)}
                   className=" w-1/2 p-2.5 rounded-xl text-white bg-gray-700 border-gray-600  focus:ring-2 focus:border-1 focus:ring-blue-500 focus:border-blue-50"
                 />
               </div>
-              {reply.length > 0 && (
+              {reply?.length > 0 && (
                 <div className="flex justify-center">
                   <button
                     onClick={() => handleSendResponse('resolved')}
