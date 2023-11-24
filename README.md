@@ -1,4 +1,4 @@
-# help_desk_exercise
+# help_desk
 ### About
 This application implements a help desk support service. Users may submit tickets describing their issues.
 <br> 
