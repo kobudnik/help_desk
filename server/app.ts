@@ -10,8 +10,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static(path.resolve(__dirname, '../client')));
-app.use('/tickets', ticketRouter);
-app.use('/logs', logRouter);
+app.use('/api/tickets', ticketRouter);
+app.use('/api/logs', logRouter);
 
 app.get('*', (req, res) => {
   const pathToIndex =
