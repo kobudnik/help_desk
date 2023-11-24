@@ -11,7 +11,7 @@ function Footer() {
       </a>
       <span> &copy; 2023 Created by Ken Budnik </span>
       <a
-        href="https://github.com/kobudnik/help_desk_exercise"
+        href="https://github.com/kobudnik/help_desk"
         target="_blank"
         rel="noopener noreferrer"
         className="hover:text-blue-800"
