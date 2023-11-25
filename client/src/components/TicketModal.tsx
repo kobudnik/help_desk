@@ -24,6 +24,8 @@ function TicketModal({ ticket, closeModal }: TicketModalProps) {
     setReply(e.target.value);
   };
 
+  const [modalStatus, setModalStatus] = useState<TicketStatus>(ticket.status);
+
   const handleSendResponse = async (
     updatedStatus: Exclude<TicketStatus, 'new'>,
   ) => {
@@ -55,6 +57,7 @@ function TicketModal({ ticket, closeModal }: TicketModalProps) {
         setTickets(newState);
         setSentStatus(true);
         setTogglePending(false);
+        setModalStatus(updatedStatus);
         if (updatedStatus === 'resolved') {
           setDisplayedResponse(reply);
           setReply('');
@@ -106,7 +109,7 @@ function TicketModal({ ticket, closeModal }: TicketModalProps) {
             <strong>Email:</strong> {ticket.email}
           </div>
           <div>
-            <strong>Status:</strong> {ticket.status}
+            <strong>Status:</strong> {modalStatus}
           </div>
           <div>
             <strong>Subject:</strong> {ticket.subject}
@@ -122,7 +125,7 @@ function TicketModal({ ticket, closeModal }: TicketModalProps) {
               {displayedResponse}{' '}
             </div>
           )}
-          {ticket.status !== 'resolved' && displayedResponse === null && (
+          {modalStatus !== 'resolved' && displayedResponse === null && (
             <div className="response-area  w-full">
               <div className="flex justify-center">
                 <textarea
